@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Python virtual env
+venv/
+backend/venv/
+
+# Build outputs
+*.exe
+*.dll
+*.lib
+*.mp4
+public/output/
+public/clip_moments.json
+
+# Logs
+*.log
+
+# Python cache
+__pycache__/
+*.py[cod]
