@@ -1,0 +1,17 @@
+# Ignore node_modules
+node_modules/
+
+# Python envs
+venv/
+__pycache__/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# VS Code / IDE stuff
+.vscode/
+.idea/

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EchoForge</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes breathe {
+      0% { background-size: 102%; }
+      50% { background-size: 105%; }
+      100% { background-size: 102%; }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #0d0d0d;
+      background-image: url("bg-topo-4k.png");
+      background-repeat: repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      animation: breathe 20s ease-in-out infinite;
+      image-rendering: crisp-edges;
+      -webkit-font-smoothing: antialiased;
+      -webkit-backface-visibility: hidden;
+      -webkit-transform: translate3d(0, 0, 0);
+      color: white;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      justify-content: center;
+    }
+
+    .tabs button {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      background-color: #1a1a1a;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .tabs button:hover {
+      background-color: #333;
+    }
+
+    .title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .title-bg {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .title-bg h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #ff4500;
+      text-shadow: 0 0 4px black, 0 0 8px black;
+    }
+
+    .title-bg p {
+      color: #ccc;
+    }
+
+    .form-container {
+      background-color: #1f1f1f;
+      border-radius: 1rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 720px;
+      margin: 0 auto;
+      animation: fadeInUp 0.8s ease forwards;
+      box-shadow: 0 0 30px rgba(255, 69, 0, 0.08);
+    }
+
+    .form-container input,
+    .form-container textarea,
+    .form-container select {
+      padding: 0.75rem;
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 0.5rem;
+      color: white;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+
+    .form-container input:focus,
+    .form-container textarea:focus,
+    .form-container select:focus {
+      border: 1px solid #ff4500;
+      outline: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #999;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #ff4500;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .clip-button {
+      background-color: #ff4500;
+      color: white;
+      font-weight: bold;
+      font-size: 1.25rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .clip-button:hover {
+      transform: scale(1.05);
+      background-color: #ff571a;
+    }
+
+    .vault {
+      width: 100vw;
+      padding: 3rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .clip-card {
+      background-color: #2a2a2a;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      width: 300px;
+      animation: fadeInUp 0.8s ease forwards;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 20px rgba(255, 69, 0, 0.06);
+    }
+
+    .clip-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 12px rgba(255, 69, 0, 0.15);
+    }
+
+    .clip-card video {
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .clip-card .buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .clip-card button {
+      flex: 1;
+      font-weight: 600;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .clip-card button:hover {
+      transform: scale(1.05);
+    }
+
+    .orange {
+      background-color: #ff4500;
+      color: white;
+    }
+
+    .red {
+      background-color: #cc0000;
+      color: white;
+    }
+
+    .score {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button>Clip Engine</button>
+      <button>Clip Vault</button>
+      <button>Video Editor</button>
+      <button>Subscription</button>
+    </div>
+
+    <div class="title">
+      <div class="title-bg">
+        <h1>EchoForge</h1>
+        <p>AI-Powered Clip Engine for Creators</p>
+      </div>
+    </div>
+
+    <div class="form-container">
+      <input type="file" />
+      <input type="text" placeholder="OR paste YouTube/Twitch link" />
+      <textarea placeholder="Enter keywords (comma-separated)"></textarea>
+      <div class="row">
+        <select><option>15 Seconds</option><option>30 Seconds</option><option>60 Seconds</option></select>
+        <select><option>Portrait (1080x1920)</option><option>Landscape (1920x1080)</option></select>
+        <select><option>Low</option><option selected>Medium</option><option>High</option></select>
+      </div>
+      <div class="row" style="justify-content: space-between; align-items: center;">
+        <span>Track Face (experimental)</span>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="row" style="justify-content: space-between; align-items: center;">
+        <span>Add Captions</span>
+        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+      </div>
+      <div class="row" style="justify-content: space-between; align-items: center;">
+        <span>Upload to TikTok</span>
+        <label class="switch"><input type="checkbox" id="uploadTikTok"><span class="slider"></span></label>
+      </div>
+      <div class="row" style="justify-content: space-between; align-items: center;">
+        <span>Upload to YouTube</span>
+        <label class="switch"><input type="checkbox" id="uploadYouTube"><span class="slider"></span></label>
+      </div>
+
+      <div id="marker-legend"></div>
+
+      <video id="clip" controls style="width: 100%; border-radius: 0.5rem; margin-top: 1.5rem;">
+        <source src="source.mp4" type="video/mp4" />
+      </video>
+      <div class="timeline" style="margin-top: 10px;">
+        <div id="timeline-markers"></div>
+      </div>
+
+      <button class="clip-button">CLIP IT!</button>
+
+      <button id="export-json" class="clip-button">Export JSON</button>
+    </div>
+  </div>
+
+  <div class="vault-grid" id="vaultGrid"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
